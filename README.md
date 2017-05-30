@@ -4,6 +4,9 @@
 
 Deadline: 14.07.2017
 
+Protocol: Wednesday 07.05.17
+Design: Wednesday 07.05.17
+
 
 ## Planning
 
