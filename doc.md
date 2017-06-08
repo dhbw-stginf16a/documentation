@@ -8,7 +8,6 @@
 - create a new game
   - PARAMS
     - host nickname
-    - team size
   - RETURN
     - game id
     - auth token
