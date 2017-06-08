@@ -10,8 +10,6 @@
     - admin nickname
   - RETURN
     - game id
-    - auth token
-    - channel id
 - join
   - PARAMS
     - game id
