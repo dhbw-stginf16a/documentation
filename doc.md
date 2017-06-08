@@ -7,7 +7,7 @@
 ## Setup game
 - create a new game
   - PARAMS
-    - host nickname
+    - admin nickname
   - RETURN
     - game id
     - auth token
@@ -61,10 +61,11 @@
     -
 
 # Extension ideas
-- action cards
-- lobby
-- game names
-- change number of teams
+- Action cards
+- When you have noone to play with, join a lobby to see other games to join
+- Give the game a name
+- Game options for the game admin
+  - min/max size of teams
 
 # Tasks
 - Erik, Jan-Robin design
