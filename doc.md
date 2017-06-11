@@ -1,69 +1,27 @@
-# Technologies
-- Websocket
-- JWT-Auth
+# Gameplay
 
-# Actions
+1. Create a new game
+2. Players join the game (first one is admin)
+3. Prepare game
+    1. Players set team (2-3 teams)
+    2. Admin starts game
+4. Play round (repeated)
+    1. Prepare round
+        1. Three categories are chosen
+        2. Each group ranks their confidence in those categories
+           Assigns one category to each member
+        3. Players set readiness
+    2. Play round
+        1. Each group answers one of every category
+            1. Each player answers one answer
+            2. Answer is checked
+            3. Points are awarded or not
+5. Winner's Ceremony
 
-## Setup game
-- create a new game
-  - PARAMS
-    - admin nickname
-  - RETURN
-    - game id
-- join
-  - PARAMS
-    - game id
-    - nick name
-  - RETURNS
-    - auth token
-    - channel id (one channel per game)
-    - team count
 
-## Channel
-- to server
-  - client status
-    - ready: true/false
-    - team id
-- to client
-  - users list
-    - nickmane
-    - ready state
-    - team id
-  - game started message
+## Extensions
 
-# Main screen
-- cooler loading screen
-- first round
-  - no betting
-  - randomly select team captain
-- new round
-  - setup
-     -> team captain to client
-     -> 3 categories
-     -> random team leader assigned
-    <-> team leader assigns importance and answerer to each category
-    <-> user sets their readiness
-     -> see who answers each question of the other teams
-    <-> team leader sets bets against one category of other teams
-        users with more than 3 points,  bet 1 or 2 points
-     -> show bets against own team
-  - questions
-    - for each team
-       -> questions to answerer and everyone of the opposing team
-          only answerable by designated answerer
-      <-  answer
-      ->  correct answer or voting - after everyone answered
-      ->  points
-  - after round
-     -> (special card)
-    -
-
-# Extension ideas
-- Action cards
-- When you have noone to play with, join a lobby to see other games to join
-- Give the game a name
-- Game options for the game admin
-  - min/max size of teams
-
-# Tasks
-- Erik, Jan-Robin design
+- Voting on correctness of an answer
+- Special events/cars
+- Joker
+- More options for the admin (team size)
