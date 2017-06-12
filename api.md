@@ -160,7 +160,7 @@ Join an existing game.
 ## Examples:
 Please take a look at the documentation-in-source mentioned at the top.
 
-First you set up the connection.
+Setup: First you set up the connection.
 ```javascript
 import {Socket} from "phoenix";
 
@@ -186,16 +186,17 @@ channel.push('join_game', {username: name, game_id: game_id})
        .receive('ok', console.log).receive('err', console.error);
 ```
 
-To receive updates you have to join the Phoenix channel of this game.
+Join game channel: To receive updates you have to join the Phoenix channel of this game.
 ```javascript
 let channel = socket.channel("game:" + game_id, {auth_token: auth_token});
 channel.join()
        .receive('ok', console.log).receive('error', console.error);
 ```
 
-Now you can receive updates. E.g on it's status.
+Listen for updates: Now you can receive updates. E.g on it's status.
 ```javascript
 channel.on('lobby_update', payload => {
   console.log('The game is ${payload.startable ? "" : "not"} startable.');
 });
+
 ```
