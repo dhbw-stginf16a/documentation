@@ -54,12 +54,27 @@ Join an existing game.
   - `name`: String (Player-Name)
   - `id`: Integer (Player-Id)
   - `team`: Integer (id of the team)
+  
+### [REQUEST `#{game_channel}` -> `select_team`]: Sets the user-team
+- Arguments:
+  - `auth_token`: String
+  - `team`: Integer (id of the team)
+- Response:
+  - `ok` (A `lobby_update` message will be broadcast reflecting the team-change)
+  - `error`
+    - `reason: invalid_team_id`
+  - `error`
+    - `reason: "auth_token_missing"`
+  - `error` (The authentication-token is invalid or issued for another wrong game)
+    - `reason: "auth_token_invalid"`
 
 ### [REQUEST `#{game_channel}` -> `start_game`]: Admin starts the game
 - Arguments:
   - `auth_token`: String
 - Response:
   - `ok` (Game was started)
+  - `error`
+    - `reason: game_not_startable`
   - `error` (Only the admin can start the game)
     - `reason: missing_permission`
   - `error`
@@ -74,7 +89,21 @@ Join an existing game.
   - `name`: String (Player-Name)
   - `id`: Integer (Player-Id)
   - `team`: Integer (id of the team)
-  - `categories`: Array[String]
+  - `category`: String
+  - `ready`: Boolean
+
+### [REQUEST `#{game_channel}` -> `set_category`]: Set the player category
+- Arguments:
+  - `auth_token`: String
+  - `category`: String / `null`
+- Response:
+  - `ok` (Update of `round_preparation` will be broadcast)
+  - `error` (Another player already chose the category)
+    - `reason: category_chosen_in_team`
+  - `error`
+    - `reason: "auth_token_missing"`
+  - `error` (The authentication-token is invalid or issued for another wrong game)
+    - `reason: "auth_token_invalid"`
 
 ### [REQUEST `#{game_channel}` -> `ready`]: Player is ready
 - Arguments:
@@ -83,19 +112,6 @@ Join an existing game.
   - `ok` (Update of `round_preparation` will be broadcast)
   - `error` (One cannot be ready without being assigned a category)
     - `reason: no_category`
-  - `error`
-    - `reason: "auth_token_missing"`
-  - `error` (The authentication-token is invalid or issued for another wrong game)
-    - `reason: "auth_token_invalid"`
-
-### [REQUEST `#{game_channel}` -> `round_preparation`]
-- Arguments:
-  - `auth_token`: String
-  - `category`: String
-- Response:
-  - `ok` (Category was assigned)
-  - `error` (Category has already been asigned to team mate)
-    - `reason: category_already_assigned`
   - `error`
     - `reason: "auth_token_missing"`
   - `error` (The authentication-token is invalid or issued for another wrong game)
