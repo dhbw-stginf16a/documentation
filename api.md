@@ -55,7 +55,7 @@ Join an existing game.
   - `id`: Integer (Player-Id)
   - `team`: Integer (id of the team)
 
-### [SEND in `#{game_channel}` type `start_game`]: Admin starts the game
+### [REQUEST `#{game_channel}` -> `start_game`]: Admin starts the game
 - Arguments:
   - `auth_token`: String
 - Response:
@@ -76,7 +76,7 @@ Join an existing game.
   - `team`: Integer (id of the team)
   - `categories`: Array[String]
 
-### [SEND in `#{game_channel}` type `ready`]: Player is ready
+### [REQUEST `#{game_channel}` -> `ready`]: Player is ready
 - Arguments:
   - `auth_token`: String
 - Response:
@@ -88,7 +88,7 @@ Join an existing game.
   - `error` (The authentication-token is invalid or issued for another wrong game)
     - `reason: "auth_token_invalid"`
 
-### [SEND in `#{game_channel}` type `round_preparation`]
+### [REQUEST `#{game_channel}` -> `round_preparation`]
 - Arguments:
   - `auth_token`: String
   - `category`: String
@@ -117,7 +117,7 @@ Join an existing game.
   - `difficulty`: Integer
   - `requiredAnswers`: Integer (number of answers that have to be provided)
 
-### [SEND in `#{game_channel}` type `answer`]
+### [REQUEST `#{game_channel}` -> `answer`]
 - Arguments:
   - `auth_token`: String
   - `question`: String (id of the question)
