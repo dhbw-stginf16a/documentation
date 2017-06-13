@@ -3,7 +3,7 @@
 ## Basic Setup
 The BrettProjekt Backend is running an instance of the [Phoenix Web Framework](http://phoenixframework.org). Therefore we are using Phoenix channels on top of WebSockets for request/response and pub/sub based communication.
 
-To get started, include the Phoenix-Channels WebSocket client and ready it's [documentation in source-code](https://github.com/mspanc/phoenix_socket/blob/master/dist/socket.js).
+To get started, include the Phoenix-Channels WebSocket client and read it's [documentation in source-code](https://github.com/mspanc/phoenix_socket/blob/master/dist/socket.js).
 
 ### [REQUEST `main` -> `create_game`]: Create a new game
 Creates a new game with no players on the server. The response will be a game-id for joining.
