@@ -9,20 +9,20 @@ To get started, include the Phoenix-Channels WebSocket client and read it's [doc
 
 Status of completion
 
-- [x] [REQUEST `main` -> `create_game`]: Create a new game
-- [x] [REQUEST `main` -> `join_game`]: Join a game
-- [x] [JOIN `#{game_channel}`]: Join the game-channel
-- [x] [RECEIVE in `#{game_channel}` type `lobby_update`]
-- [x] [REQUEST `#{game_channel}` -> `select_team`]: Sets the user-team
-- [ ] [REQUEST `#{game_channel}` -> `start_game`]: Admin starts the game
-- [ ] [RECEIVE in `#{game_channel}` type `round_preparation`]
-- [ ] [REQUEST `#{game_channel}` -> `set_category`]: Set the player category
-- [ ] [REQUEST `#{game_channel}` -> `ready`]: Player is ready
-- [ ] [RECEIVE in `#{game_channel}` type `round_started`]
-- [ ] [RECEIVE in `#{game_channel}` type `questions`]
-- [ ] [REQUEST `#{game_channel}` -> `answer`]
-- [ ] [RECEIVE in `#{game_channel}` type `round_ended`]
-- [ ] [RECEIVE in `#{game_channel}` type `game_ended`]
+- [x] [[REQUEST `main` -> `create_game`]: Create a new game](#request-main---create_game-create-a-new-game)
+- [x] [[REQUEST `main` -> `join_game`]: Join a game](#request-main---join_game-join-a-game)
+- [x] [[JOIN `#{game_channel}`]: Join the game-channel](#join-game_channel-join-the-game-channel)
+- [x] [[RECEIVE in `#{game_channel}` type `lobby_update`]](#receive-in-game_channel-type-lobby_update)
+- [x] [[REQUEST `#{game_channel}` -> `select_team`]: sets the user-team](#request-game_channel---select_team-sets-the-user-team)
+- [ ] [[REQUEST `#{game_channel}` -> `start_game`]: Admin starts the game](#request-game_channel---start_game-admin-starts-the-game)
+- [ ] [[RECEIVE in `#{game_channel}` type `round_preparation`]](#receive-in-game_channel-type-round_preparation)
+- [ ] [[REQUEST `#{game_channel}` -> `set_category`]: set the player category](#request-game_channel---set_category-set-the-player-category)
+- [ ] [[REQUEST `#{game_channel}` -> `ready`]: Player is ready](#request-game_channel---ready-player-is-ready)
+- [ ] [[RECEIVE in `#{game_channel}` type `round_started`]](#receive-in-game_channel-type-round_started)
+- [ ] [[RECEIVE in `#{game_channel}` type `questions`]](#receive-in-game_channel-type-questions)
+- [ ] [[REQUEST `#{game_channel}` -> `answer`]](#request-game_channel---answer)
+- [ ] [[RECEIVE in `#{game_channel}` type `round_ended`]](#receive-in-game_channel-type-round_ended)
+- [ ] [[RECEIVE in `#{game_channel}` type `game_ended`]](#receive-in-game_channel-type-game_ended)
 
 ### [REQUEST `main` -> `create_game`]: Create a new game
 Creates a new game with no players on the server. The response will be a game-id for joining.
