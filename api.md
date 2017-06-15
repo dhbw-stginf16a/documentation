@@ -5,6 +5,25 @@ The BrettProjekt Backend is running an instance of the [Phoenix Web Framework](h
 
 To get started, include the Phoenix-Channels WebSocket client and read it's [documentation in source-code](https://github.com/mspanc/phoenix_socket/blob/master/dist/socket.js).
 
+## Actions
+
+Status of completion
+
+- [x] [REQUEST `main` -> `create_game`]: Create a new game
+- [x] [REQUEST `main` -> `join_game`]: Join a game
+- [x] [JOIN `#{game_channel}`]: Join the game-channel
+- [x] [RECEIVE in `#{game_channel}` type `lobby_update`]
+- [x] [REQUEST `#{game_channel}` -> `select_team`]: Sets the user-team
+- [ ] [REQUEST `#{game_channel}` -> `start_game`]: Admin starts the game
+- [ ] [RECEIVE in `#{game_channel}` type `round_preparation`]
+- [ ] [REQUEST `#{game_channel}` -> `set_category`]: Set the player category
+- [ ] [REQUEST `#{game_channel}` -> `ready`]: Player is ready
+- [ ] [RECEIVE in `#{game_channel}` type `round_started`]
+- [ ] [RECEIVE in `#{game_channel}` type `questions`]
+- [ ] [REQUEST `#{game_channel}` -> `answer`]
+- [ ] [RECEIVE in `#{game_channel}` type `round_ended`]
+- [ ] [RECEIVE in `#{game_channel}` type `game_ended`]
+
 ### [REQUEST `main` -> `create_game`]: Create a new game
 Creates a new game with no players on the server. The response will be a game-id for joining.
 
@@ -54,7 +73,7 @@ Join an existing game.
   - `name`: String (Player-Name)
   - `id`: Integer (Player-Id)
   - `team`: Integer (id of the team)
-  
+
 ### [REQUEST `#{game_channel}` -> `select_team`]: Sets the user-team
 - Arguments:
   - `auth_token`: String
