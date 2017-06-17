@@ -16,7 +16,7 @@ Status of completion
 - [x] [[REQUEST `#{game_channel}` -> `select_team`]: sets the user-team](#request-game_channel---select_team-sets-the-user-team)
 - [ ] [[REQUEST `#{game_channel}` -> `start_game`]: Admin starts the game](#request-game_channel---start_game-admin-starts-the-game)
 - [ ] [[RECEIVE in `#{game_channel}` type `round_preparation`]](#receive-in-game_channel-type-round_preparation)
-- [ ] [[REQUEST `#{game_channel}` -> `set_category`]: set the player category](#request-game_channel---set_category-set-the-player-category)
+- [ ] [[REQUEST `#{game_channel}` -> `set_categories`]: set the player categories](#request-game_channel---set_categories-set-the-player-categories)
 - [ ] [[REQUEST `#{game_channel}` -> `ready`]: Player is ready](#request-game_channel---ready-player-is-ready)
 - [ ] [[RECEIVE in `#{game_channel}` type `round_started`]](#receive-in-game_channel-type-round_started)
 - [ ] [[RECEIVE in `#{game_channel}` type `questions`]](#receive-in-game_channel-type-questions)
@@ -69,6 +69,7 @@ Join an existing game.
 
 ### [RECEIVE in `#{game_channel}` type `lobby_update`]
 - `startable`: Boolean
+- `max_teams`: Integer (max number of teams)
 - `players`: Array[Object]
   - `name`: String (Player-Name)
   - `id`: Integer (Player-Id)
@@ -82,6 +83,8 @@ Join an existing game.
   - `ok` (A `lobby_update` message will be broadcast reflecting the team-change)
   - `error`
     - `reason: invalid_team_id`
+  - `error`
+    - `reason: empty_team`
   - `error`
     - `reason: "auth_token_missing"`
   - `error` (The authentication-token is invalid or issued for another wrong game)
@@ -111,13 +114,19 @@ Join an existing game.
   - `category`: String
   - `ready`: Boolean
 
-### [REQUEST `#{game_channel}` -> `set_category`]: Set the player category
+### [REQUEST `#{game_channel}` -> `set_categories`]: Set the player categories
 - Arguments:
   - `auth_token`: String
-  - `category`: String / `null`
+  - `categories`: String / `null`
 - Response:
   - `ok` (Update of `round_preparation` will be broadcast)
-  - `error` (Another player already chose the category)
+  - `error`
+    - `reason: categories_unavailable` (tried setting a category that is not available in the game)
+  - `error`
+    - `reason: cateogries_missing` (did not supply categories)
+  - `error`
+    - `reason: categories_empty`
+  - `error` (Another player already chose the categories)
     - `reason: category_chosen_in_team`
   - `error`
     - `reason: "auth_token_missing"`
