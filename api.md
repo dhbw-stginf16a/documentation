@@ -74,6 +74,7 @@ Join an existing game.
   - `name`: String (Player-Name)
   - `id`: Integer (Player-Id)
   - `team`: Integer (id of the team)
+  - `ready`: Boolean
 
 ### [REQUEST `#{game_channel}` -> `select_team`]: Sets the user-team
 - Arguments:
