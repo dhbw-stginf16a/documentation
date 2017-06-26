@@ -41,9 +41,8 @@ Join an existing game.
 - Response:
   - `ok`
     - `auth_token` (Authentication-token, which verifies all further player-messages)
-    - `game_channel` (The Phoenix-Channel to join)
     - `user_id` (The user-identifier in the game)
-    - `team_size` (Number of teams in the game)
+    - `team_size` (Number of teams in the game)  # TODO first game 0 or 1?
   - `error`
     - `reason: "username_missing"`
   - `error`
@@ -69,11 +68,10 @@ Join an existing game.
 
 ### [RECEIVE in `#{game_channel}` type `lobby_update`]
 - `startable`: Boolean
-- `max_teams`: Integer (max number of teams)
 - `players`: Array[Object]
   - `name`: String (Player-Name)
   - `id`: Integer (Player-Id)
-  - `team`: Integer (id of the team)
+  - `team`: Integer (id of the team)  # TODO mege team struct into here
   - `ready`: Boolean
 
 ### [REQUEST `#{game_channel}` -> `select_team`]: Sets the user-team
@@ -91,6 +89,17 @@ Join an existing game.
   - `error` (The authentication-token is invalid or issued for another wrong game)
     - `reason: "auth_token_invalid"`
 
+### [REQUEST `#{game_channel}` -> `ready`]: Player is ready
+- Arguments:
+  - `auth_token`: String
+- Response:
+  - `ok` (Update of `lobby_update` will be broadcast)
+  - `error`
+    - `reason: "auth_token_missing"`
+  - `error` (The authentication-token is invalid or issued for another wrong game)
+    - `reason: "auth_token_invalid"`
+
+
 ### [REQUEST `#{game_channel}` -> `start_game`]: Admin starts the game
 - Arguments:
   - `auth_token`: String
@@ -106,51 +115,32 @@ Join an existing game.
     - `reason: "auth_token_invalid"`
 
 ### [RECEIVE in `#{game_channel}` type `round_preparation`]
-- `round_started`: Boolean
-- `categories`: Array[String]
-- `players`: Array[Object]
-  - `name`: String (Player-Name)
-  - `id`: Integer (Player-Id)
-  - `team`: Integer (id of the team)
-  - `category`: String
-  - `ready`: Boolean
+- `categories`: Array[String]  # TODO
+- `teams`: Object[`team_id`: Object]
+  - `name`: String (Player name)
+  - `categories`: Object[`category_id`: String]  # TODO maybe add difficulty
+  - `points`: Integer (Points carried over from previous round)
 
 ### [REQUEST `#{game_channel}` -> `set_categories`]: Set the player categories
 - Arguments:
   - `auth_token`: String
-  - `categories`: String / `null`
+  - `categories`: Object[category_id: difficulty]
 - Response:
-  - `ok` (Update of `round_preparation` will be broadcast)
+  - `ok`
+    (Update of `round_preparation` will be broadcast)
+    (First `questions` broadcast will be issued when every category has been assigned)
   - `error`
     - `reason: categories_unavailable` (tried setting a category that is not available in the game)
   - `error`
-    - `reason: cateogries_missing` (did not supply categories)
-  - `error`
     - `reason: categories_empty`
-  - `error` (Another player already chose the categories)
-    - `reason: category_chosen_in_team`
+  - `error` (Another player already chose one of the categories)
+    - `reason: category_taken`  # TODO send which category caused the problem
   - `error`
     - `reason: "auth_token_missing"`
   - `error` (The authentication-token is invalid or issued for another wrong game)
     - `reason: "auth_token_invalid"`
-
-### [REQUEST `#{game_channel}` -> `ready`]: Player is ready
-- Arguments:
-  - `auth_token`: String
-- Response:
-  - `ok` (Update of `round_preparation` will be broadcast)
-  - `error` (One cannot be ready without being assigned a category)
-    - `reason: no_category`
-  - `error`
-    - `reason: "auth_token_missing"`
-  - `error` (The authentication-token is invalid or issued for another wrong game)
-    - `reason: "auth_token_invalid"`
-
-### [RECEIVE in `#{game_channel}` type `round_started`]
-(Round starts when everyone is ready and conditions are met)
 
 ### [RECEIVE in `#{game_channel}` type `questions`]
-- `team`: Integer (id of the team that is currently answering)
 - `questions`: Array[Object]
   - `id`: String (id of the question)
   - `category`: String
@@ -165,7 +155,8 @@ Join an existing game.
 ### [REQUEST `#{game_channel}` -> `answer`]
 - Arguments:
   - `auth_token`: String
-  - `question`: String (id of the question)
+  - `question`: (id of the question)
+  - `answer`
 - Response:
   - `ok` (Question successfully answered)
   - `error`
@@ -178,29 +169,31 @@ Join an existing game.
     - `reason: "auth_token_invalid"`
 
 ### [RECEIVE in `#{game_channel}` type `round_ended`]
-- `teams`: Array[Object]
-  - `id`: Integer
-  - `questions`: Array[Object]
-    - `id`: Integer (id of the question)
-    - `correct`: Boolean (whether or not this question was answered correctly)
-    - `category`: String
-    - `title`: String
-    - `possibilities`: Array[Object]
-      - `id`: Integer
-      - `text`: String
-    - `difficulty`: Integer
-    - `requiredAnswers`: Integer (number of answers that have to be provided)
-    - `answers`: Array[Object]
-      - `id`: Integer
-      - `text`: String
-    - `givenAnswers`: Array[Object]
-      - `id`: Integer
-      - `text`: String
+- `teams`: Object[`team_id`: Object] (id of the team that is currently answering)
+  - `players`: Object[`player_id`: Object]
+    - `name`: String
+    - `questions`: Array[Object]
+      - `id`: Integer (id of the question)
+      - `correct`: Boolean (whether or not this question was answered correctly)
+      - `category`: String
+      - `title`: String
+      - `possibilities`: Array[Object]
+        - `id`: Integer
+        - `answer`
+      - `difficulty`: Integer
+      - `requiredAnswers`: Integer (number of answers that have to be provided)
+      - `answers`: Array[Object]
+        - `id`: Integer
+        - `answer`
+      - `givenAnswers`: Array[Object]
+        - `id`: Integer
+        - `answer`
 
 ### [RECEIVE in `#{game_channel}` type `game_ended`]
 - `teams`: Array[Object]
   - `points`: Integer
-  - `members`: Array[String]
+  - `members`: Object[player_id: String]
+    - `player_name`
 
 ## Examples:
 Please take a look at the documentation-in-source mentioned at the top.
