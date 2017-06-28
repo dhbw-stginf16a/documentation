@@ -13,11 +13,11 @@ Status of completion
 - [x] [[REQUEST `main` -> `join_game`]: Join a game](#request-main---join_game-join-a-game)
 - [x] [[JOIN `#{game_channel}`]: Join the game-channel](#join-game_channel-join-the-game-channel)
 - [x] [[RECEIVE in `#{game_channel}` type `lobby_update`]](#receive-in-game_channel-type-lobby_update)
-- [x] [[REQUEST `#{game_channel}` -> `select_team`]: sets the user-team](#request-game_channel---select_team-sets-the-user-team)
+- [x] [[REQUEST `#{game_channel}` -> `set_team`]: sets the user-team](#request-game_channel---set_team-sets-the-user-team)
+- [x] [[REQUEST `#{game_channel}` -> `ready`]: Player is ready](#request-game_channel---ready-player-is-ready)
 - [ ] [[REQUEST `#{game_channel}` -> `start_game`]: Admin starts the game](#request-game_channel---start_game-admin-starts-the-game)
 - [ ] [[RECEIVE in `#{game_channel}` type `round_preparation`]](#receive-in-game_channel-type-round_preparation)
 - [ ] [[REQUEST `#{game_channel}` -> `set_categories`]: set the player categories](#request-game_channel---set_categories-set-the-player-categories)
-- [ ] [[REQUEST `#{game_channel}` -> `ready`]: Player is ready](#request-game_channel---ready-player-is-ready)
 - [ ] [[RECEIVE in `#{game_channel}` type `round_started`]](#receive-in-game_channel-type-round_started)
 - [ ] [[RECEIVE in `#{game_channel}` type `questions`]](#receive-in-game_channel-type-questions)
 - [ ] [[REQUEST `#{game_channel}` -> `answer`]](#request-game_channel---answer)
@@ -42,7 +42,7 @@ Join an existing game.
   - `ok`
     - `auth_token` (Authentication-token, which verifies all further player-messages)
     - `user_id` (The user-identifier in the game)
-    - `team_size` (Number of teams in the game)  # TODO first game 0 or 1?
+    - `team_size` (Number of teams in the game)
   - `error`
     - `reason: "username_missing"`
   - `error`
@@ -69,12 +69,12 @@ Join an existing game.
 ### [RECEIVE in `#{game_channel}` type `lobby_update`]
 - `startable`: Boolean
 - `players`: Array[Object]
-  - `name`: String (Player-Name)
   - `id`: Integer (Player-Id)
-  - `team`: Integer (id of the team)  # TODO mege team struct into here
+  - `name`: String (Player-Name)
+  - `team`: Integer (id of the team)
   - `ready`: Boolean
 
-### [REQUEST `#{game_channel}` -> `select_team`]: Sets the user-team
+### [REQUEST `#{game_channel}` -> `set_team`]: Sets the user-team
 - Arguments:
   - `auth_token`: String
   - `team`: Integer (id of the team)
@@ -83,8 +83,6 @@ Join an existing game.
   - `error`
     - `reason: invalid_team_id`
   - `error`
-    - `reason: empty_team`
-  - `error`
     - `reason: "auth_token_missing"`
   - `error` (The authentication-token is invalid or issued for another wrong game)
     - `reason: "auth_token_invalid"`
@@ -92,6 +90,7 @@ Join an existing game.
 ### [REQUEST `#{game_channel}` -> `ready`]: Player is ready
 - Arguments:
   - `auth_token`: String
+  - `ready`: boolean
 - Response:
   - `ok` (Update of `lobby_update` will be broadcast)
   - `error`
