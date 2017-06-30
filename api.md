@@ -114,7 +114,7 @@ Join an existing game.
     - `reason: "auth_token_invalid"`
 
 ### [RECEIVE in `#{game_channel}` type `round_preparation`]
-- `categories`: Array[String]  # TODO
+- `categories`: Object[Category ID: Category Name]
 - `teams`: Object[`team_id`: Object]
   - `name`: String (Player name)
   - `categories`: Object[`category_id`: String]  # TODO maybe add difficulty
