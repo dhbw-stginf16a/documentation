@@ -15,8 +15,8 @@ Status of completion
 - [x] [[RECEIVE in `#{game_channel}` type `lobby_update`]](#receive-in-game_channel-type-lobby_update)
 - [x] [[REQUEST `#{game_channel}` -> `set_team`]: sets the user-team](#request-game_channel---set_team-sets-the-user-team)
 - [x] [[REQUEST `#{game_channel}` -> `ready`]: Player is ready](#request-game_channel---ready-player-is-ready)
-- [ ] [[REQUEST `#{game_channel}` -> `start_game`]: Admin starts the game](#request-game_channel---start_game-admin-starts-the-game)
-- [ ] [[RECEIVE in `#{game_channel}` type `round_preparation`]](#receive-in-game_channel-type-round_preparation)
+- [x] [[REQUEST `#{game_channel}` -> `start_game`]: Admin starts the game](#request-game_channel---start_game-admin-starts-the-game)
+- [x] [[RECEIVE in `#{game_channel}` type `round_preparation`]](#receive-in-game_channel-type-round_preparation)
 - [ ] [[REQUEST `#{game_channel}` -> `set_categories`]: set the player categories](#request-game_channel---set_categories-set-the-player-categories)
 - [ ] [[RECEIVE in `#{game_channel}` type `round_started`]](#receive-in-game_channel-type-round_started)
 - [ ] [[RECEIVE in `#{game_channel}` type `questions`]](#receive-in-game_channel-type-questions)
@@ -105,7 +105,11 @@ Join an existing game.
 - Response:
   - `ok` (Game was started)
   - `error`
-    - `reason: game_not_startable`
+    - `reason: you_are_alone`
+  - `error`
+    - `reason: no_players`
+  - `error`
+    - `reason: not_everyone_ready`
   - `error` (Only the admin can start the game)
     - `reason: missing_permission`
   - `error`
@@ -116,9 +120,10 @@ Join an existing game.
 ### [RECEIVE in `#{game_channel}` type `round_preparation`]
 - `categories`: Object[Category ID: Category Name]
 - `teams`: Object[`team_id`: Object]
-  - `name`: String (Player name)
-  - `categories`: Object[`category_id`: String]  # TODO maybe add difficulty
-  - `points`: Integer (Points carried over from previous round)
+  - `players`: Object[player_id: Object]
+    - `name`
+  - `categories`: Object[`category_id`: player_id]
+  - `points`: Integer (Points carried over from previous round)  # TODO always zero - fix this
 
 ### [REQUEST `#{game_channel}` -> `set_categories`]: Set the player categories
 - Arguments:
