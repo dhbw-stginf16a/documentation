@@ -14,11 +14,10 @@ Status of completion
 - [x] [[JOIN `#{game_channel}`]: Join the game-channel](#join-game_channel-join-the-game-channel)
 - [x] [[RECEIVE in `#{game_channel}` type `lobby_update`]](#receive-in-game_channel-type-lobby_update)
 - [x] [[REQUEST `#{game_channel}` -> `set_team`]: sets the user-team](#request-game_channel---set_team-sets-the-user-team)
-- [x] [[REQUEST `#{game_channel}` -> `ready`]: Player is ready](#request-game_channel---ready-player-is-ready)
+- [x] [[REQUEST `#{game_channel}` -> `set_ready`]: Player is ready](#request-game_channel---set_ready-player-is-ready)
 - [x] [[REQUEST `#{game_channel}` -> `start_game`]: Admin starts the game](#request-game_channel---start_game-admin-starts-the-game)
 - [x] [[RECEIVE in `#{game_channel}` type `round_preparation`]](#receive-in-game_channel-type-round_preparation)
-- [ ] [[REQUEST `#{game_channel}` -> `set_categories`]: set the player categories](#request-game_channel---set_categories-set-the-player-categories)
-- [ ] [[RECEIVE in `#{game_channel}` type `round_started`]](#receive-in-game_channel-type-round_started)
+- [x] [[REQUEST `#{game_channel}` -> `set_categories`]: set the player categories](#request-game_channel---set_categories-set-the-player-categories)
 - [ ] [[RECEIVE in `#{game_channel}` type `questions`]](#receive-in-game_channel-type-questions)
 - [ ] [[REQUEST `#{game_channel}` -> `answer`]](#request-game_channel---answer)
 - [ ] [[RECEIVE in `#{game_channel}` type `round_ended`]](#receive-in-game_channel-type-round_ended)
@@ -87,7 +86,7 @@ Join an existing game.
   - `error` (The authentication-token is invalid or issued for another wrong game)
     - `reason: "auth_token_invalid"`
 
-### [REQUEST `#{game_channel}` -> `ready`]: Player is ready
+### [REQUEST `#{game_channel}` -> `set_ready`]: Player is ready
 - Arguments:
   - `auth_token`: String
   - `ready`: boolean
@@ -123,12 +122,12 @@ Join an existing game.
   - `players`: Object[player_id: Object]
     - `name`
   - `categories`: Object[`category_id`: player_id]
-  - `points`: Integer (Points carried over from previous round)  # TODO always zero - fix this
+  - `points`: Integer (Points carried over from previous round)
 
 ### [REQUEST `#{game_channel}` -> `set_categories`]: Set the player categories
 - Arguments:
   - `auth_token`: String
-  - `categories`: Object[category_id: difficulty]
+  - `categories`: Array[category_id]
 - Response:
   - `ok`
     (Update of `round_preparation` will be broadcast)
@@ -138,7 +137,7 @@ Join an existing game.
   - `error`
     - `reason: categories_empty`
   - `error` (Another player already chose one of the categories)
-    - `reason: category_taken`  # TODO send which category caused the problem
+    - `reason: category_taken`  # TODO maybe send which category caused the problem
   - `error`
     - `reason: "auth_token_missing"`
   - `error` (The authentication-token is invalid or issued for another wrong game)
